@@ -1,0 +1,126 @@
+
+body{
+    background-color: #FCFFFD;
+    padding: 0;
+    margin: 0;
+    color: #646464;
+}
+
+* {
+box-sizing: border-box;
+}
+
+main{
+    width: 100vw;
+    min-height: calc(100vh - 4rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*Estilos de la barra de navegación*/
+nav{
+    padding: 0 2rem;
+    height: 4rem;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 1%), 0 10px 30px rgb(0 0 0 / 10%);
+    position: sticky;
+	top: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    z-index: 100; 
+}
+
+nav.hide{
+    display: none;
+}
+
+nav button{
+    margin: 0 .5rem;
+}
+
+/*Estilos de los formularios*/
+form{
+    background-color: #FFFFFF;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 1%), 0 10px 30px rgb(0 0 0 / 10%);
+    border-radius: .5rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    max-width: 500px;
+}
+form .form-input-wrapper{
+    text-align: left;
+    margin: 2rem 0 .5rem 0;
+    position: relative;
+}
+
+form .form-input-wrapper input{
+    border: 0; 
+    padding: .5rem 0; 
+    border-bottom: 1px solid #ccc; 
+    background-color: transparent;
+    width: 100%; 
+    box-sizing: border-box; 
+    letter-spacing: 1px;
+    border-radius: 0;
+}
+
+form .form-input-wrapper input:focus{
+    outline: none;
+    box-shadow: none;
+}
+
+form .form-input-wrapper span{
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    width: 0; 
+    height: 2px; 
+    background-color: #62B6CB ; 
+    transition: 0.4s;
+}
+
+input:focus ~span{
+    width: 100%; transition: 0.4s;
+}
+
+form button{
+    margin-top: 1.5rem;
+}
+
+form#user-form{
+    padding: 1rem 2rem;
+}
+
+
+/* Estilo de botones */
+
+button{
+    padding: .5rem 1rem;
+    background-color: #62B6CB ;
+    border: 0;
+}
+
+button.danger{
+    background-color: #bb2121 ;
+    color: #FFFFFF;
+}
+
+
+/*Estilos de cards usuarios*/
+
+.card{
+    background-color: #FFFFFF;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 1%), 0 10px 30px rgb(0 0 0 / 10%);
+    border-radius: .5rem;
+    padding: 1rem 2rem;
+    width: 100%;
+    max-width: 500px;
+    margin: 1rem 0;
+}
+
+.card h4, .card h5{
+   margin: .5rem 0;
+}
