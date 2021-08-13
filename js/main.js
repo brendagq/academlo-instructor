@@ -1,4 +1,11 @@
 
+/*Determina que vista se va a mostrar dependiendo del valor de 'logged' que se encuentra en el localStorage
+    si logged = 0, muestra el form para iniciar sesión, 
+    si logged = 1 muestra el dashboard con el listado de usuarios y form para crear uno nuevo,
+    si no existe, es decir, si logged no es igual ni a 0 ni a 1, muestra el form para registrarse 
+    puesto que no hay información guardada en localStorage de ningun usuario
+*/
+
 function DeterminateView() {
     const session = localStorage.getItem('logged')
   
@@ -86,10 +93,14 @@ function DeterminateView() {
     }
 }
 
-
+/*Función que se ejecuta en el submit del registro*/
 function SignupSubmit() {
     let form = document.getElementById("signup-form")
 
+    /*En caso de que todos los valores sean truthy, es decir, distintos a "" (cadena vacia), undefined o null, 
+    los guarda en localStorage para ser utilizados despues y cambia a la vista de login.
+    Crea tambien userList donde se guardara la lista de usuarios creados.
+    */
     if( form.name.value && form.lastName.value && form.email.value && form.password.value){
         localStorage.setItem( 'name', form.name.value )
         localStorage.setItem( 'lastName', form.lastName.value )
@@ -104,12 +115,16 @@ function SignupSubmit() {
 
 }
 
+/* Se ejecuta en el submit de login */
 function LoginSubmit() {
     let form = document.getElementById("login-form")
     let currentEmail = localStorage.getItem('email')
     let  currentPassword = localStorage.getItem('password')
 
-    if( form.loginemail.value && form.loginpassword.value  ){       
+    if( form.loginemail.value && form.loginpassword.value  ){ 
+        /*Compara los valores de email y contraseña ingresados por el usuario en el inicio de sesión 
+        y los compara con la información guardad en localStorage. Si la informacion coincide cambia el 
+        valor de logged y muestra el dashboard, en caso contrario muestra una alerta*/      
         if(  currentEmail == form.loginemail.value && currentPassword == form.loginpassword.value){
             localStorage.setItem( 'logged', '1')
             DeterminateView()
@@ -123,13 +138,18 @@ function LoginSubmit() {
 
 
 function  Logout() {
+    /* Cierra sesión al cambiar el valor de logged sin eliminar la información almacenada en localstorage.
+    Muestra la vista de login */
     localStorage.setItem( 'logged', '0')
 
     DeterminateView()
 }
 
+/*Agrega un nuevo usuario a la lista de usuarios almacenada*/
 function AddUser() {
+
     let form = document.getElementById("user-form")
+    /*JSON.parse() permite convertir el json alojado en userList en un array para facilitar su manipulación*/
     let currentUsers = JSON.parse( localStorage.getItem('usersList') )
 
     if(form.name.value && form.lastName.value && form.email.value ){
@@ -140,8 +160,15 @@ function AddUser() {
             email : form.email.value,
         }
 
+        /*Define una variable de tipo array llamada newList, ademas de asignarle un valor con ayuda de spread syntax.
+        Los elementos contenidos en la nueva variable son todos los elementos habidos en currentUsers
+        (los elementos ya existentes en el localStorage), MÁS el nuevo elemento newUser
+        */
         let newList = [...currentUsers, newUser]
 
+        /*Reemplaza el valor de userList por la nueva lista que incluye al nuevo usuario.
+        Lista a todos los usuarios de nuevo
+        */
         localStorage.setItem( 'usersList', JSON.stringify( newList ))
 
         GetUsersList()
@@ -150,12 +177,15 @@ function AddUser() {
 
 }
 
+/*Lista todos los usuarios almacenados en usersList*/
 function GetUsersList() {
     let users = JSON.parse( localStorage.getItem('usersList') )
 
     const wrapper = document.getElementById("card-wrapper")
+    /* Vacia de contenido para evitar mostrar usuarios repetidos*/
     wrapper.innerHTML=""
 
+    /*  Ciclo que muestra cada uno de los usuarios. */
     for(let i = 0 ; i < users.length; i++){
         wrapper.innerHTML += `
                     <div class="card">
@@ -169,6 +199,13 @@ function GetUsersList() {
 
 }
 
+/*  Los usuarios guardados en userList se guardan de forma temporal en una variable llamada users.
+    El usuario que quiere eliminarse es borrado del array users con ayuda del método splice que recibe como 
+    parametros la posición desde la cual se eliminaran elementos y la cantidad de elementos a eliminar (1, en éste caso).
+    
+    A usersList se le reasigna el nuevo valor de users que ya ha sido modificado y ya no contiene al usuario seleccionado.
+    Lista a los usuarios nuevamente ya que hubo una modificación.
+*/
 function DeleteUser(index) {
     let users = JSON.parse( localStorage.getItem('usersList') )
 
@@ -179,6 +216,10 @@ function DeleteUser(index) {
     GetUsersList()
 }
 
+
+/*  Permite editar la información de un usuario sobreescribiendo el valor del elemento correspondiente en 
+    el array usersList
+*/
 function EditUser(index) {
     const form = document.getElementById("edit-form")
     const list = JSON.parse( localStorage.getItem('usersList') )
@@ -199,6 +240,8 @@ function EditUser(index) {
     }
 }
 
+
+/*Muestra un form para editar a un usuario seleccionado*/
 function ChangeToEditUser(index) {
     const view = document.getElementById('main-wrapper')
     const list = JSON.parse( localStorage.getItem('usersList') )
